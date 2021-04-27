@@ -14,9 +14,14 @@ export const defineMyLocation = () => {
         dispatch(loading(true));
         location().then(json => {
             if (json) {
-                console.log(json);
-                const link = `https://api.openweathermap.org/data/2.5/weather?lat=${json.coords.latitude}&lon=${json.coords.longitude}&appid=${ACCESS_KEY}`;
-                fetchWrap(link, dispatch, saveData, saveError, loading, 'myLocation');
+                if (json.message == 'permission not granted') {
+                    dispatch(saveError(json.message));
+                } else {
+                    const link = `https://api.openweathermap.org/data/2.5/weather?lat=${json.coords.latitude}&lon=${json.coords.longitude}&appid=${ACCESS_KEY}`;
+                    fetchWrap(link, dispatch, saveData, saveError, loading, 'myLocation');
+                }
+            } else {
+                dispatch(saveError('something wrong'));
             }
         });
     }
