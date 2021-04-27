@@ -1,0 +1,12 @@
+{
+  "name": "ssi",
+  "displayName": "ssi",
+  "expo": {
+    "name": "ssi",
+    "slug": "ssi",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
