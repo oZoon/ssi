@@ -7,28 +7,37 @@ import {
 } from '../../lib/constants.js';
 
 export default (state, action) => {
-    const newState = JSON.parse(JSON.stringify(state));
     switch (action.type) {
         case LOADING:
-            newState.isLoading = action.data;
-            return newState;
+            return Object.assign({}, state, {
+                ...state,
+                isLoading: action.data,
+            })
         case ERROR_DATA:
-            newState.error = action.data;
-            return newState;
+            return Object.assign({}, state, {
+                ...state,
+                error: action.data,
+            })
         case SAVE_DATA:
-            newState.store.push(action.data);
-            newState.partialText = '';
-            newState.data = action.data;
-            newState.error = '';
-            action.side == 'myLocation' ? newState.myLocation = true: null;
-            return newState;
+            return Object.assign({}, state, {
+                ...state,
+                store: state.store.some(item => item.id == action.data.id) ? state.store : state.store.concat(action.data),
+                partialText: '',
+                data: action.data,
+                error: '',
+                myLocation: action.side == 'myLocation' || state.myLocation ? true : false,
+            })
         case CHANGE_DATA:
-            newState.data = action.data;
-            return newState;
+            return Object.assign({}, state, {
+                ...state,
+                data: action.data,
+            })
         case SAVE_PARTIAL_DATA:
-            newState.partialText = action.data;
-            return newState;
+            return Object.assign({}, state, {
+                ...state,
+                partialText: action.data,
+            })
         default:
-            return newState;
+            return state;
     }
 }
